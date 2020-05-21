@@ -1,0 +1,43 @@
+## Input reads and coverage .................................................................
+
+A total of 120,632,923 pair end reads (150bp long) were used to assembly the genome.
+asuming a genome size of 364.186 Mb, the geome was sequenced at 99.4 X coverage.
+
+## Assembly using super nova ................................................................
+
+Genome was assembled using the Supernova genome assembler, designed forChromium-prepared 
+librares. 
+
+Reads were not preprocessed, as recomended in the Supernova documentation.
+
+4 paired end libraries were used, each was assembled into contigs using the folowing script:
+
+for left in $(ls):
+	id=$(echo $sample | cut -f1 -d '_')
+	right=$(echo $sample | sed -i 's/1.fq.gz/2.fq.gz/g')
+	supernova run --id=$id\
+  		      --fastqs= $left $right
+
+The final assembly was created using the following script:
+
+supernova mkoutput --style=pseudohap\
+		   --asmdir=./\
+		   --outprefix=Colias_assembly_supernova
+
+## Assembly stats ...........................................................................
+
+The final supernova assembly was ~ 364 Mb represented in 88,397 scaffolds with a N50 of 5.1Mb
+
+These are the complete stats for the assembly:
+
+stats for colias_all4_supernova.fasta
+sum = 364186584, n = 88397, ave = 4119.90, largest = 82139
+N50 = 5140, n = 18590
+N60 = 4173, n = 26468
+N70 = 3394, n = 36177
+N80 = 2884, n = 47833
+N90 = 1999, n = 62733
+N100 = 1000, n = 88397
+N_count = 353870
+Gaps = 5668
+
